@@ -29,7 +29,7 @@ func main() {
     handleRequests()
 }
 ```
-run this code by *go run Basic.go* and navigate to *http://localhost:8080/* in local browser so output should be *"Hello this is HomePage on Go !"* print out on screen.
+run this code by *go run BasicApi.go* and navigate to *http://localhost:8080/* in local browser so output should be *"Hello this is HomePage on Go !"* print out on screen.
 
 # User Structure
 
@@ -77,7 +77,7 @@ update *main* function to insert data for User
   handleRequests()
 }
 ```
-# Retrieving All Articles
+# Retrieving All Users
 
 Now when click with *HTTP GET* request, it will retuern all User for that define getAllUser function and set header ,which will return all user in JSON format:
 
@@ -197,7 +197,7 @@ Now define Function that accept {id} and return particular User
 }
 
 ```
-Now type *'htp://localhost:8080/user/1'* and get user which ID is 1
+Now type *'http://localhost:8080/user/1'* and get user which ID is 1
 ```go
   {
     "Id": "1",
@@ -210,7 +210,7 @@ Now type *'htp://localhost:8080/user/1'* and get user which ID is 1
 ```
 # Create and Update User
 
-craete new function *'CreateUser'* and also define rout into *'handleRequests'* function
+create new function *'CreateUser'* and also define route into *'handleRequests'* function
 
 ``` go
   func CreateUser(w http.ResponseWriter, r *http.Request){
@@ -223,3 +223,103 @@ craete new function *'CreateUser'* and also define rout into *'handleRequests'* 
 
 }
 ```
+Here we use two funcitons rand of math/rand package and strcov package for string Convertion, here we genrating random Id for user.
+
+we’ll be adding .Methods("POST") to the end of our route to specify that we only want to call this function when the incoming request is a HTTP POST request
+
+```go
+  func handleRequests(){
+
+  myRouter := mux.NewRouter().StrictSlash(true)
+  myRouter.HandleFunc("/",HomePage)
+  myRouter.HandleFunc("/user",getAllUser).Methods("GET")
+  myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
+  myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
+}
+```
+Now to update
+
+```go
+  func UpdateUser(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Content-Type","application/json")
+  params := mux.Vars(r)
+  for index, item := range users{
+    if item.ID == params["Id"]{
+      users = append(users[:index], users[index+1:]...)
+      var new User
+      _ = json.NewDecoder(r.Body).Decode(&new)
+      new.ID = params["Id"]
+      users = append(users,new)
+      json.NewEncoder(w).Encode(new)
+      return
+
+    }
+
+  }
+  json.NewEncoder(w).Encode(users)
+}
+```
+define handlerequest function
+
+```go
+  func handleRequests(){
+
+  myRouter := mux.NewRouter().StrictSlash(true)
+  myRouter.HandleFunc("/",HomePage)
+  myRouter.HandleFunc("/user",getAllUser).Methods("GET")
+  myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
+  myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
+  myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
+
+  log.Fatal(http.ListenAndServe(":8080",myRouter))
+}
+```
+
+Pass Id which you want to update:
+**http://localhost/user/2**
+
+```go
+  {
+    "Id": "2",
+    "name": "siya",
+    "Addsress": "demo Road",
+    "MobileNumber": 999999999,
+    "City": "rajkot",
+    "Email": "divya@improwised.com"
+}
+```
+#Delete User
+
+function receives HTTP DELETE requests and deletes user if they match the given Id path parameter.
+
+```go
+  func DeleteUser(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Content-Type","application/json")
+  params := mux.Vars(r)
+  for index, item := range users{
+    if item.ID == params["Id"]{
+      users = append(users[:index], users[index+1:]...)
+      break
+    }
+
+  }
+  json.NewEncoder(w).Encode(users)
+}
+```
+define route in handleRequests function.
+
+```go
+  func handleRequests(){
+
+  myRouter := mux.NewRouter().StrictSlash(true)
+  myRouter.HandleFunc("/",HomePage)
+  myRouter.HandleFunc("/user",getAllUser).Methods("GET")
+  myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
+  myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
+  myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
+  myRouter.HandleFunc("/user/{Id}",DeleteUser).Methods("DELETE")
+
+  log.Fatal(http.ListenAndServe(":8080",myRouter))
+}
+```
+HTTP DELETE request to http://localhost:8080/user/2. This will delete the second user within User array and Now when you go http://localhost:8080/user with a HTTP GET request, you should see second User will be deleted.
