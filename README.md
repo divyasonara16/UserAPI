@@ -6,7 +6,7 @@
  * main : function which starts API
 
  ```go
-  package main
+package main
 
 import (
     "fmt"
@@ -73,8 +73,8 @@ update **main** function to insert data for User
           MobileNumber: 888888888,
           City: "ahemdabad",
           Email: "sonara@improwised.com",
-  })
-  handleRequests()
+    })
+    handleRequests()
   }
 ```
 # Retrieving All Users
@@ -163,8 +163,8 @@ func main(){
           MobileNumber: 888888888,
           City: "ahemdabad",
           Email: "sonara@improwised.com",
-  })
-  handleRequests()
+      })
+    handleRequests()
   }
 
 ```
@@ -189,9 +189,9 @@ Now define Function that accept {id} and return particular User
     if item.ID == params["Id"]{
       json.NewEncoder(w).Encode(item)
       return
+      }
     }
-  }
-  json.NewEncoder(w).Encode(&User{})
+    json.NewEncoder(w).Encode(&User{})
   }
 
 ```
@@ -250,11 +250,9 @@ Now to update
       users = append(users,new)
       json.NewEncoder(w).Encode(new)
       return
-
+      }
     }
-
-  }
-  json.NewEncoder(w).Encode(users)
+    json.NewEncoder(w).Encode(users)
   }
 ```
 define handlerequest function
@@ -262,14 +260,14 @@ define handlerequest function
 ```go
   func handleRequests(){
 
-  myRouter := mux.NewRouter().StrictSlash(true)
-  myRouter.HandleFunc("/",HomePage)
-  myRouter.HandleFunc("/user",getAllUser).Methods("GET")
-  myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
-  myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
-  myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
+    myRouter := mux.NewRouter().StrictSlash(true)
+    myRouter.HandleFunc("/",HomePage)
+    myRouter.HandleFunc("/user",getAllUser).Methods("GET")
+    myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
+    myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
+    myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
 
-  log.Fatal(http.ListenAndServe(":8080",myRouter))
+    log.Fatal(http.ListenAndServe(":8080",myRouter))
   }
 ```
 
@@ -292,16 +290,15 @@ function receives HTTP DELETE requests and deletes user if they match the given 
 
 ```go
   func DeleteUser(w http.ResponseWriter, r *http.Request){
-  w.Header().Set("Content-Type","application/json")
-  params := mux.Vars(r)
-  for index, item := range users{
-    if item.ID == params["Id"]{
-      users = append(users[:index], users[index+1:]...)
-      break
-    }
-
-  }
-  json.NewEncoder(w).Encode(users)
+    w.Header().Set("Content-Type","application/json")
+    params := mux.Vars(r)
+    for index, item := range users{
+      if item.ID == params["Id"]{
+        users = append(users[:index], users[index+1:]...)
+        break
+        }
+      }
+    json.NewEncoder(w).Encode(users)
   }
 ```
 define route in handleRequests function.
@@ -309,15 +306,15 @@ define route in handleRequests function.
 ```go
   func handleRequests(){
 
-  myRouter := mux.NewRouter().StrictSlash(true)
-  myRouter.HandleFunc("/",HomePage)
-  myRouter.HandleFunc("/user",getAllUser).Methods("GET")
-  myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
-  myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
-  myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
-  myRouter.HandleFunc("/user/{Id}",DeleteUser).Methods("DELETE")
+    myRouter := mux.NewRouter().StrictSlash(true)
+    myRouter.HandleFunc("/",HomePage)
+    myRouter.HandleFunc("/user",getAllUser).Methods("GET")
+    myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
+    myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
+    myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
+    myRouter.HandleFunc("/user/{Id}",DeleteUser).Methods("DELETE")
 
-  log.Fatal(http.ListenAndServe(":8080",myRouter))
+    log.Fatal(http.ListenAndServe(":8080",myRouter))
   }
 ```
 HTTP DELETE request to http://localhost:8080/user/2. This will delete the second user within User array and Now when you go http://localhost:8080/user with a HTTP GET request, you should see second User will be deleted.
