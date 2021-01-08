@@ -1,8 +1,8 @@
-# Create Simple APi in Golang
+# Create Simple User API in Golang
  In this file create simple server which can handle HTTP requests.and three distinc functions.
 
  * homepage : function that will handle requests to our root URl
- * handleRequest : function that will hmatch the URL path hit with a defined function
+ * handleRequest : function that will match the URL path hit with a defined function
  * main : function which starts API
 
  ```go
@@ -29,11 +29,11 @@ func main() {
     handleRequests()
 }
 ```
-run this code by *go run BasicApi.go* and navigate to *http://localhost:8080/* in local browser so output should be *"Hello this is HomePage on Go !"* print out on screen.
+run this code by **go run BasicApi.go** and navigate to **http://localhost:8080/** in local browser so output should be **"Hello this is HomePage on Go !"** print out on screen.
 
 # User Structure
 
-Now creating a REST API that alloes to *Create*,*Read*, *Update*, and *Delete* the User.
+Now creating a REST API that alloes to **Create**,**Read**, **Update**, and **Delete** the User.
 
 First,define 'User' structure. in this structure Features like ID, Name, Addsress, MobileNumber, City, Email.
 
@@ -50,9 +50,9 @@ First,define 'User' structure. in this structure Features like ID, Name, Addsres
 var users []User
 ```
 
-To display all users,we need to import the *"encoding/json"* package
+To display all users,we need to import the **"encoding/json"** package
 
-update *main* function to insert data for User
+update **main** function to insert data for User
 
 ```go
   func main(){
@@ -79,7 +79,7 @@ update *main* function to insert data for User
 ```
 # Retrieving All Users
 
-Now when click with *HTTP GET* request, it will retuern all User for that define getAllUser function and set header ,which will return all user in JSON format:
+Now when click with **HTTP GET** request, it will return all User for that define getAllUser function and set header ,which will return all user in JSON format:
 
 ```go
   func getAllUser(w http.ResponseWriter, r *http.Request){
@@ -122,10 +122,10 @@ open up http://localhost:8080/user in browser and you should see a JSON represen
     }
 ]
 ```
-Now to update API we must use *'github.com/gorilla/mux'* router.
+Now to update API we must use **'github.com/gorilla/mux'** router.
 this routers will enable to more easily perform tasks such as parsing any path or query parameters that may reside within an incoming HTTP request.
 
-update import statement and modify *handleRrquests* function so that it creates a new router.
+update import statement and modify **handleRrquests** function so that it creates a new router.
 
 ```go
   package main
@@ -173,7 +173,7 @@ unc main(){
 # Path Variables
 
 Now using gorilla/mux we can add variables to our paths and select particular user.
-To create a new route with *handlerequests()* function as:
+To create a new route with **handlerequests()** function as:
 
 ```go
   myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
@@ -197,7 +197,7 @@ Now define Function that accept {id} and return particular User
 }
 
 ```
-Now type *'http://localhost:8080/user/1'* and get user which ID is 1
+Now type **'http://localhost:8080/user/1'** and get user which ID is 1
 ```go
   {
     "Id": "1",
@@ -210,7 +210,7 @@ Now type *'http://localhost:8080/user/1'* and get user which ID is 1
 ```
 # Create and Update User
 
-create new function *'CreateUser'* and also define route into *'handleRequests'* function
+create new function **'CreateUser'** and also define route into **'handleRequests'** function
 
 ``` go
   func CreateUser(w http.ResponseWriter, r *http.Request){
