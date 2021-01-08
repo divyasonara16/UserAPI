@@ -27,7 +27,7 @@ func handleRequests(){
 
 func main() {
     handleRequests()
-}
+ }
 ```
 run this code by **go run BasicApi.go** and navigate to **http://localhost:8080/** in local browser so output should be **"Hello this is HomePage on Go !"** print out on screen.
 
@@ -45,7 +45,7 @@ First,define 'User' structure. in this structure Features like ID, Name, Addsres
       MobileNumber int `json:MobileNumber`
       City string `json:city`
       Email string `json:email`
-}
+ }
 
 var users []User
 ```
@@ -75,7 +75,7 @@ update **main** function to insert data for User
           Email: "sonara@improwised.com",
   })
   handleRequests()
-}
+  }
 ```
 # Retrieving All Users
 
@@ -86,7 +86,7 @@ Now when click with **HTTP GET** request, it will return all User for that defin
 
   w.Header().Set("Content-Type","application/json")
   json.NewEncoder(w).Encode(users)
-}
+ }
 ```
 The call to json.NewEncoder(w).Encode(users) does encoding User array into a JSON string and then writing as part of response.
 
@@ -98,7 +98,7 @@ Before this will work, we’ll also need to add a new route to our handleRequest
   http.HandleFunc("/",HomePage)
   http.HandleFunc("/user",getAllUser)
   log.Fatal(http.ListenAndServe(":8080",nil))
-}
+ }
 ```
 open up http://localhost:8080/user in browser and you should see a JSON representation of your list of users like so:
 
@@ -120,7 +120,7 @@ open up http://localhost:8080/user in browser and you should see a JSON represen
         "City": "ahemdabad",
         "Email": "sonara@improwised.com"
     }
-]
+ ]
 ```
 Now to update API we must use **'github.com/gorilla/mux'** router.
 this routers will enable to more easily perform tasks such as parsing any path or query parameters that may reside within an incoming HTTP request.
@@ -128,7 +128,7 @@ this routers will enable to more easily perform tasks such as parsing any path o
 update import statement and modify **handleRrquests** function so that it creates a new router.
 
 ```go
-  package main
+package main
 
 import (
   "fmt"
@@ -137,7 +137,7 @@ import (
   "encoding/json"
   "github.com/gorilla/mux"
 )
-unc handleRequests(){
+func handleRequests(){
 
   myRouter := mux.NewRouter().StrictSlash(true)
   myRouter.HandleFunc("/",HomePage)
@@ -145,7 +145,7 @@ unc handleRequests(){
 
   log.Fatal(http.ListenAndServe(":8080",myRouter))
 }
-unc main(){
+func main(){
 
   users = append(users, User{
           ID : "1",
@@ -165,7 +165,7 @@ unc main(){
           Email: "sonara@improwised.com",
   })
   handleRequests()
-}
+  }
 
 ```
 # Path Variables
@@ -192,7 +192,7 @@ Now define Function that accept {id} and return particular User
     }
   }
   json.NewEncoder(w).Encode(&User{})
-}
+  }
 
 ```
 Now type **'http://localhost:8080/user/1'** and get user which ID is 1
@@ -204,7 +204,7 @@ Now type **'http://localhost:8080/user/1'** and get user which ID is 1
     "MobileNumber": 999999999,
     "City": "rajkot",
     "Email": "divya@improwised.com"
-}
+  }
 ```
 # Create and Update User
 
@@ -219,7 +219,7 @@ create new function **'CreateUser'** and also define route into **'handleRequest
   users = append(users,new)
   json.NewEncoder(w).Encode(new)
 
-}
+  }
 ```
 Here we use two funcitons rand of math/rand package and strcov package for string Convertion, here we genrating random Id for user.
 
@@ -233,7 +233,7 @@ we’ll be adding .Methods("POST") to the end of our route to specify that we on
   myRouter.HandleFunc("/user",getAllUser).Methods("GET")
   myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
   myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
-}
+  }
 ```
 Now to update
 
@@ -255,7 +255,7 @@ Now to update
 
   }
   json.NewEncoder(w).Encode(users)
-}
+  }
 ```
 define handlerequest function
 
@@ -270,7 +270,7 @@ define handlerequest function
   myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
 
   log.Fatal(http.ListenAndServe(":8080",myRouter))
-}
+  }
 ```
 
 Pass Id which you want to update:
@@ -284,7 +284,7 @@ Pass Id which you want to update:
     "MobileNumber": 999999999,
     "City": "rajkot",
     "Email": "divya@improwised.com"
-}
+  }
 ```
 #Delete User
 
@@ -302,7 +302,7 @@ function receives HTTP DELETE requests and deletes user if they match the given 
 
   }
   json.NewEncoder(w).Encode(users)
-}
+  }
 ```
 define route in handleRequests function.
 
@@ -318,6 +318,6 @@ define route in handleRequests function.
   myRouter.HandleFunc("/user/{Id}",DeleteUser).Methods("DELETE")
 
   log.Fatal(http.ListenAndServe(":8080",myRouter))
-}
+  }
 ```
 HTTP DELETE request to http://localhost:8080/user/2. This will delete the second user within User array and Now when you go http://localhost:8080/user with a HTTP GET request, you should see second User will be deleted.
