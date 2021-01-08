@@ -135,8 +135,6 @@ import (
   "log"
   "net/http"
   "encoding/json"
-  "math/rand"
-  "strconv"
   "github.com/gorilla/mux"
 )
 unc handleRequests(){
