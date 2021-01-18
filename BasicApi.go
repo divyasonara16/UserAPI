@@ -46,7 +46,7 @@ func GetUser(w http.ResponseWriter, r *http.Request){
 }
 
 //create User
-func InsertUser(w http.ResponseWriter, r *http.Request){
+func CreateUser(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type","application/json")
 	var new User
 	_ = json.NewDecoder(r.Body).Decode(&new)
@@ -101,7 +101,7 @@ func handleRequests(){
 	myRouter.HandleFunc("/",HomePage)
 	myRouter.HandleFunc("/user",getAllUser).Methods("GET")
 	myRouter.HandleFunc("/user/{Id}",GetUser).Methods("GET")
-	myRouter.HandleFunc("/user/new",InsertUser).Methods("POST")
+	myRouter.HandleFunc("/user/new",CreateUser).Methods("POST")
 	myRouter.HandleFunc("/user/{Id}",UpdateUser).Methods("PUT")
 	myRouter.HandleFunc("/user/{Id}",DeleteUser).Methods("DELETE")
 
